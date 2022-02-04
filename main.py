@@ -10,25 +10,23 @@ class PhotoViewer:
         self.master = master
         self.master.title("Photo Viewer App")
 
-        self.images = []
-        self.sounds = []
-        self.make_image_and_sound_arrays(image_files, sound_files)
+        self.images, self.sounds = self.__make_image_and_sound_arrays(image_files, sound_files)
 
         self.title = Label(text="Photo Album Viewer", font=("Times New Roman", 25))
         self.main_menu_label = Label(text="Main Menu", font=("Helvetica", 20))
-        self.start_button = Button(master, text="Start", command=self.start_from_beginning, height=2, width=8,
+        self.start_button = Button(master, text="Start", command=self.__start_from_beginning, height=2, width=8,
                                    background="#5BB4E2")
-        self.close_button = Button(master, text="Close", command=self.close, background="#C72027")
-        self.previous_button = Button(master, text="Previous", command=self.previous, background="#5BB4E2",
+        self.close_button = Button(master, text="Close", command=self.__close, background="#C72027")
+        self.previous_button = Button(master, text="Previous", command=self.__previous, background="#5BB4E2",
                                       state="disabled")
-        self.next_button = Button(master, text="Next", command=self.next, background="#5BB4E2")
+        self.next_button = Button(master, text="Next", command=self.__next, background="#5BB4E2")
         self.current = -1
-        self.main_menu()
+        self.__main_menu()
 
-    def start_from_beginning(self):
-        self.start(0)
+    def __start_from_beginning(self):
+        self.__start(0)
 
-    def start(self, current):
+    def __start(self, current):
         self.current = current
         self.master.geometry("604x635")
         self.start_button.destroy()
@@ -37,10 +35,10 @@ class PhotoViewer:
         self.close_button.place(relx=0.5, rely=0.975, anchor='center')
         self.previous_button.place(relx=0.2, rely=0.975, anchor='center')
         self.next_button.place(relx=0.8, rely=0.975, anchor='center')
-        self.show_image(0)
-        self.play_sound(0)
+        self.__show_image(0)
+        self.__play_sound(0)
 
-    def main_menu(self):
+    def __main_menu(self):
         self.title.place(relx=0.5, rely=0.2, anchor='center')
         self.main_menu_label.place(relx=0.5, rely=0.4, anchor='center')
         self.start_button.place(relx=0.5, rely=0.7, anchor='center')
@@ -49,23 +47,23 @@ class PhotoViewer:
         self.master.configure(bg="#F4EDD3")
         self.current = -1
 
-    def view_gallery(self):
+    def __view_gallery(self):
         # TODO
         return
 
-    def next(self):
+    def __next(self):
         self.current += 1
-        self.update_buttons()
-        self.show_image(self.current)
-        self.play_sound(self.current)
+        self.__update_buttons()
+        self.__show_image(self.current)
+        self.__play_sound(self.current)
 
-    def previous(self):
+    def __previous(self):
         self.current -= 1
-        self.update_buttons()
-        self.show_image(self.current)
-        self.play_sound(self.current)
+        self.__update_buttons()
+        self.__show_image(self.current)
+        self.__play_sound(self.current)
 
-    def update_buttons(self):
+    def __update_buttons(self):
         # first image
         if self.current == 0:
             self.previous_button = Button(self.master, text="Previous", state="disabled", background="#4C98BF")
@@ -73,25 +71,25 @@ class PhotoViewer:
 
         # last image
         if self.current == len(self.images) - 1:
-            self.next_button = Button(self.master, text="Next", state="disabled", command=self.next,
+            self.next_button = Button(self.master, text="Next", state="disabled", command=self.__next,
                                       background="#5BB4E2")
             self.next_button.place(relx=0.8, rely=0.975, anchor='center')
 
         # any other image
         if 0 < self.current < len(self.images) - 1:
-            self.next_button = Button(self.master, text="Next", command=self.next, background="#5BB4E2")
+            self.next_button = Button(self.master, text="Next", command=self.__next, background="#5BB4E2")
             self.next_button.place(relx=0.8, rely=0.975, anchor='center')
-            self.previous_button = Button(self.master, text="Previous", command=self.previous, background="#5BB4E2")
+            self.previous_button = Button(self.master, text="Previous", command=self.__previous, background="#5BB4E2")
             self.previous_button.place(relx=0.2, rely=0.975, anchor='center')
 
-    def close(self):
+    def __close(self):
         self.master.quit()
 
-    def show_image(self, n):
+    def __show_image(self, n):
         i = Label(image=self.images[n])
         i.place(relx=0.5, rely=0, anchor='n')
 
-    def play_sound(self, n):
+    def __play_sound(self, n):
         pygame.mixer.music.stop()
 
         if self.sounds[n] is None:
@@ -100,7 +98,8 @@ class PhotoViewer:
         pygame.mixer.music.load(self.sounds[n])
         pygame.mixer.music.play(loops=0)
 
-    def make_image_and_sound_arrays(self, png_files, mp3_files):
+    @staticmethod
+    def __make_image_and_sound_arrays(png_files, mp3_files):
         new_png_files = []
         new_mp3_files = []
         for img in png_files:
@@ -110,8 +109,7 @@ class PhotoViewer:
                 new_mp3_files.append('media/sounds/' + mp3_name)
             else:
                 new_mp3_files.append(None)
-        self.images = new_png_files
-        self.sounds = new_mp3_files
+        return new_png_files, new_mp3_files
 
 
 pics = []
@@ -124,3 +122,4 @@ for root, dirs, files in os.walk('media/sounds'):
 window = Tk()
 PhotoViewer(window, pics, tunes)
 window.mainloop()
+
