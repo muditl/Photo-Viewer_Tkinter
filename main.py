@@ -8,10 +8,10 @@ class PhotoViewer:
         self.root.geometry("300x300")
         self.root.configure(bg="#F4EDD3")
 
-        img1 = PhotoImage(file='image1.png')
-        img2 = PhotoImage(file='image2.png')
-        img3 = PhotoImage(file='image3.png')
-        img4 = PhotoImage(file='image4.png')
+        img1 = PhotoImage(file='images/image1.png')
+        img2 = PhotoImage(file='images/image2.png')
+        img3 = PhotoImage(file='images/image3.png')
+        img4 = PhotoImage(file='images/image4.png')
         self.images = [img1, img2, img3, img4]
 
         self.title = Label(text="Photo Album Viewer", font=("Times New Roman", 25))
