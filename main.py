@@ -1,6 +1,9 @@
 import os
 from tkinter import *
+
+import PIL.ImageShow
 import pygame
+from PIL import Image, ImageTk, _tkinter_finder
 
 
 class PhotoViewer:
@@ -11,7 +14,7 @@ class PhotoViewer:
         self.master.title("Photo Viewer App")
 
         self.images, self.sounds = self.__make_image_and_sound_arrays(image_files, sound_files)
-
+        print(self.images)
         self.title = Label(text="Photo Album Viewer", font=("Times New Roman", 25))
         self.main_menu_label = Label(text="Main Menu", font=("Helvetica", 20))
         self.start_button = Button(master, text="Start", command=self.__start_from_beginning, height=2, width=8,
@@ -22,6 +25,7 @@ class PhotoViewer:
         self.next_button = Button(master, text="Next", command=self.__next, background="#5BB4E2")
         self.current = -1
         self.__main_menu()
+        # self.__view_gallery()
 
     def __start_from_beginning(self):
         self.__start(0)
@@ -49,6 +53,12 @@ class PhotoViewer:
 
     def __view_gallery(self):
         # TODO
+        image = ImageTk.getimage(self.images[1])
+        image = image.resize((450, 350), Image.ANTIALIAS)
+        my_img = ImageTk.PhotoImage(image)
+        my_img = Label(image=my_img)
+        i = Label(image=my_img)
+        i.place(relx=0.5, rely=0, anchor='n')
         return
 
     def __next(self):
@@ -111,6 +121,10 @@ class PhotoViewer:
                 new_mp3_files.append(None)
         return new_png_files, new_mp3_files
 
+    def __get_small_images(self, x, y):
+
+        return
+
 
 pics = []
 tunes = []
@@ -122,4 +136,3 @@ for root, dirs, files in os.walk('media/sounds'):
 window = Tk()
 PhotoViewer(window, pics, tunes)
 window.mainloop()
-
