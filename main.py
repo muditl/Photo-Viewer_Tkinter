@@ -8,10 +8,8 @@ import pygame
 class PhotoViewer:
     def __init__(self, master, image_files, sound_files, small_images):
         self.music_player = pygame.mixer
-        self.music_player.init()
         self.master = master
-        self.master.title("Photo Viewer App")
-        self.gallery_buttons = []
+        self.gallery_buttons, self.images, self.sounds, self.small_images = [], [], [], []
         self.images, self.sounds, self.small_images = self.__make_image_and_sound_arrays(image_files, sound_files,
                                                                                          small_images)
         self.title = Label()
@@ -46,12 +44,12 @@ class PhotoViewer:
         self.music_player.music.stop()
         self.__destroy_everything()
         self.__create_everything()
+        self.master.geometry("300x300")
         self.title.place(relx=0.5, rely=0.2, anchor='center')
         self.main_menu_label.place(relx=0.5, rely=0.4, anchor='center')
         self.start_button.place(relx=0.3, rely=0.7, anchor='center')
         self.gallery_button.place(relx=0.7, rely=0.7, anchor='center')
         self.close_button.place(relx=0.5, rely=0.85, anchor='center')
-        self.master.geometry("300x300")
         self.master.configure(bg="#F4EDD3")
         self.current = -1
 
@@ -62,9 +60,23 @@ class PhotoViewer:
         self.close_button.place(relx=0.85, rely=0.975, anchor='center')
         self.main_menu_button.place(relx=0.8, rely=0.975, anchor='e')
         self.master.geometry("604x635")
-        x = 604 / 3
         for i in range(len(self.gallery_buttons)):
-            self.gallery_buttons[i].place(relx=x * (i % 3) / 604, rely=self.__get_y(i) / 600, anchor='sw')
+            self.gallery_buttons[i].place(relx=self.__get_x(i), rely=self.__get_y(i) / 600, anchor='sw')
+
+        # TODO add scroll bar if more than 9 images... looks like it is not possible
+        # It seems that I cannot have a clickable images with a scroll bar.
+        # I can make a scroll bar of Tkinter.Text() objects which would be images, but not clickable.
+        # Or I can make a scroll bar with Tkinter.ListBox() items which would be clickable, but not images.
+        # can't find any other solution
+
+        # scrollbar = Scrollbar(self.master)
+        # scrollbar.pack(side=RIGHT, fill=Y)
+        # mylist = Listbox(root, yscrollcommand=scrollbar.set)
+        # for line in range(100):
+        #     mylist.insert(END, "This is line number " + str(line))
+        #
+        # mylist.pack(side=LEFT, fill=BOTH)
+        # scrollbar.config(command=mylist.yview)
 
     def __next(self):
         self.current += 1
@@ -140,7 +152,8 @@ class PhotoViewer:
 
     @staticmethod
     def __get_x(n):
-        return
+        x = 604 / 3
+        return x * (n % 3) / 604
 
     @staticmethod
     def __make_image_and_sound_arrays(png_files, mp3_files, small_img):
@@ -173,6 +186,8 @@ class PhotoViewer:
             self.gallery_buttons = []
 
     def __create_everything(self):
+        self.master.title("Photo Viewer App")
+        self.music_player.init()
         self.start_button = Button(self.master, text="Slideshow", command=self.__start_from_beginning, height=2,
                                    width=8,
                                    background="#5BB4E2")
