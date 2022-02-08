@@ -90,7 +90,8 @@ class PhotoViewer:
             self.previous_button = Button(self.master, text="Previous", state="disabled", background="#4C98BF",
                                           height=2, width=10)
             self.previous_button.place(relx=0.0, rely=0.975, anchor='w')
-            self.next_button = Button(self.master, text="Next", command=self.__next_image, background="#5BB4E2", height=2,
+            self.next_button = Button(self.master, text="Next", command=self.__next_image, background="#5BB4E2",
+                                      height=2,
                                       width=10)
             self.next_button.place(relx=0.15, rely=0.975, anchor='w')
 
@@ -101,7 +102,8 @@ class PhotoViewer:
             self.next_button = Button(self.master, text="Next", state="disabled",
                                       background="#5BB4E2", height=2, width=10)
             self.next_button.place(relx=0.15, rely=0.975, anchor='w')
-            self.previous_button = Button(self.master, text="Previous", command=self.__previous_image, background="#5BB4E2",
+            self.previous_button = Button(self.master, text="Previous", command=self.__previous_image,
+                                          background="#5BB4E2",
                                           height=2, width=10)
             self.previous_button.place(relx=0.0, rely=0.975, anchor='w')
 
@@ -109,10 +111,12 @@ class PhotoViewer:
         if 0 < self.current < len(self.images) - 1:
             self.previous_button.destroy()
             self.next_button.destroy()
-            self.next_button = Button(self.master, text="Next", command=self.__next_image, background="#5BB4E2", height=2,
+            self.next_button = Button(self.master, text="Next", command=self.__next_image, background="#5BB4E2",
+                                      height=2,
                                       width=10)
             self.next_button.place(relx=0.15, rely=0.975, anchor='w')
-            self.previous_button = Button(self.master, text="Previous", command=self.__previous_image, background="#5BB4E2",
+            self.previous_button = Button(self.master, text="Previous", command=self.__previous_image,
+                                          background="#5BB4E2",
                                           height=2, width=10)
             self.previous_button.place(relx=0, rely=0.975, anchor='w')
 
