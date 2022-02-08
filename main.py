@@ -175,7 +175,7 @@ class PhotoViewer:
         self.current_image.destroy()
         for i in self.gallery_buttons:
             i.destroy()
-            self.gallery_buttons = []
+        self.gallery_buttons = []
 
     def __create_everything(self):
         self.master.title("Photo Viewer App")
