@@ -26,9 +26,9 @@ class PhotoViewer:
         self.__main_menu()
 
     def __start_from_beginning(self):
-        self.__start(0)
+        self.__start_slideshow(0)
 
-    def __start(self, current):
+    def __start_slideshow(self, current):
         self.__destroy_everything()
         self.__create_everything()
         self.current = current
@@ -63,29 +63,19 @@ class PhotoViewer:
         for i in range(len(self.gallery_buttons)):
             self.gallery_buttons[i].place(relx=self.__get_x(i), rely=self.__get_y(i) / 600, anchor='sw')
 
-        # TODO add scroll bar if more than 9 images... looks like it is not possible
         # It seems that I cannot have a clickable images with a scroll bar.
         # I can make a scroll bar of Tkinter.Text() objects which would be images, but not clickable.
         # Or I can make a scroll bar with Tkinter.ListBox() items which would be clickable, but not images.
         # can't find any other solution
 
-        # scrollbar = Scrollbar(self.master)
-        # scrollbar.pack(side=RIGHT, fill=Y)
-        # mylist = Listbox(root, yscrollcommand=scrollbar.set)
-        # for line in range(100):
-        #     mylist.insert(END, "This is line number " + str(line))
-        #
-        # mylist.pack(side=LEFT, fill=BOTH)
-        # scrollbar.config(command=mylist.yview)
-
-    def __next(self):
+    def __next_image(self):
         self.current += 1
         self.current_image.destroy()
         self.__update_buttons()
         self.__show_image(self.current)
         self.__play_sound(self.current)
 
-    def __previous(self):
+    def __previous_image(self):
         self.current -= 1
         self.current_image.destroy()
         self.__update_buttons()
@@ -100,7 +90,7 @@ class PhotoViewer:
             self.previous_button = Button(self.master, text="Previous", state="disabled", background="#4C98BF",
                                           height=2, width=10)
             self.previous_button.place(relx=0.0, rely=0.975, anchor='w')
-            self.next_button = Button(self.master, text="Next", command=self.__next, background="#5BB4E2", height=2,
+            self.next_button = Button(self.master, text="Next", command=self.__next_image, background="#5BB4E2", height=2,
                                       width=10)
             self.next_button.place(relx=0.15, rely=0.975, anchor='w')
 
@@ -111,7 +101,7 @@ class PhotoViewer:
             self.next_button = Button(self.master, text="Next", state="disabled",
                                       background="#5BB4E2", height=2, width=10)
             self.next_button.place(relx=0.15, rely=0.975, anchor='w')
-            self.previous_button = Button(self.master, text="Previous", command=self.__previous, background="#5BB4E2",
+            self.previous_button = Button(self.master, text="Previous", command=self.__previous_image, background="#5BB4E2",
                                           height=2, width=10)
             self.previous_button.place(relx=0.0, rely=0.975, anchor='w')
 
@@ -119,10 +109,10 @@ class PhotoViewer:
         if 0 < self.current < len(self.images) - 1:
             self.previous_button.destroy()
             self.next_button.destroy()
-            self.next_button = Button(self.master, text="Next", command=self.__next, background="#5BB4E2", height=2,
+            self.next_button = Button(self.master, text="Next", command=self.__next_image, background="#5BB4E2", height=2,
                                       width=10)
             self.next_button.place(relx=0.15, rely=0.975, anchor='w')
-            self.previous_button = Button(self.master, text="Previous", command=self.__previous, background="#5BB4E2",
+            self.previous_button = Button(self.master, text="Previous", command=self.__previous_image, background="#5BB4E2",
                                           height=2, width=10)
             self.previous_button.place(relx=0, rely=0.975, anchor='w')
 
@@ -142,6 +132,7 @@ class PhotoViewer:
         self.music_player.music.load(self.sounds[n])
         self.music_player.music.play(loops=0)
 
+    # get rel_y value for gallery
     @staticmethod
     def __get_y(n):
         res = 190
@@ -150,6 +141,7 @@ class PhotoViewer:
                 res += 190
         return res
 
+    # get rel_x value for gallery
     @staticmethod
     def __get_x(n):
         x = 604 / 3
@@ -196,15 +188,15 @@ class PhotoViewer:
         self.main_menu_button = Button(self.master, text="Main Menu", command=self.__main_menu, height=2, width=8,
                                        background="#C90076")
         self.close_button = Button(self.master, text="Close", command=self.__close, background="#C72027")
-        self.previous_button = Button(self.master, text="Previous", command=self.__previous, background="#5BB4E2",
+        self.previous_button = Button(self.master, text="Previous", command=self.__previous_image, background="#5BB4E2",
                                       state="disabled", height=5, width=10)
-        self.next_button = Button(self.master, text="Next", command=self.__next, background="#5BB4E2", height=5,
+        self.next_button = Button(self.master, text="Next", command=self.__next_image, background="#5BB4E2", height=5,
                                   width=10)
         self.title = Label(text="Photo Album Viewer", font=("Times New Roman", 25))
         self.main_menu_label = Label(text="Main Menu", font=("Helvetica", 20))
         for i in range(len(self.small_images)):
             img_button = Button(self.master, image=self.small_images[i], command=partial(
-                self.__start, i))
+                self.__start_slideshow, i))
             self.gallery_buttons.append(img_button)
 
 
